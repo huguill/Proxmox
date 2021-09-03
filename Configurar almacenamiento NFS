@@ -1,0 +1,37 @@
+1- Necesitamos de antemano contar con la IP de nuestro nodo Proxmox y la IP del servidor que brinda el servicio NFS.
+2- Nota: Este ejemplo se basa en un Servidor Centos 7.
+  Vamos a instalar los paquetes para podes habilitar NFS.
+   yum -y install nfs-utils libnfsidmap rpcbind
+3- Una vez instalados los paquetes, habilitamos los servicios rpc y nfs
+  systemctl enable rpcbind
+  systemctl enable nfs-server
+4- Luego iniciamos los servicios  
+  systemctl start rpcbind
+  systemctl start nfs-server
+  systemctl start rpc-statd
+  systemctl start nfs-idmapd
+5- Iniciamos el firewalld y agregamos las reglas que permites el acceso externo a los servicios rpc y nfs
+  systemctl start firewalld
+  firewall-cmd --permanent --zone public --add-service mountd
+  firewall-cmd --permanent --zone public --add-service rpc-bind
+  firewall-cmd --permanent --zone public --add-service nfs
+6- Recargamos firewalld para aplicar los cambios
+  firewall-cmd --reload
+7- Podemos verificar los servicios habilitados con el siguiente comando
+  firewall-cmd --list-all
+8- Continuamos en nuestro server Centos, creamos un directorio que vamos a compartir por nfs y modificamos sus permisos
+  mkdir -p /var/nfsproxmox
+  chmod -R 777 /var/nfsproxmox/
+9- Editamos el archivo /etc/exports donde vamos a agregar la siguiente linea indicando el directorio a compartir, la ip de nuestro proxmox y permisos
+  /var/nfsproxmox 192.168.1.111(rw,sync,no_root_squash)
+10- Debemos exportar el directorio compartido con el siguiente comando
+  exportfs -r
+11- Entramos a nuestro proxmos via web y en el panel izquierdo seleccionamos DATACENTER->Storage->Add (NFS) y completamos con los siguientes datos
+  ID = nfsproxmox
+  Server IP = 192.168.1.102 #En este caso de ejemplo ponemos la ip del servidor Centos. 
+  Export = /var/nfsproxmox.
+  Content = Indicamos el tipo de archivo que podra almacenar el directorio nfs: Disk image, ISO file, Container, VZDump backup file, etc.
+  Enable = marcado.
+  Max Backups = Indicar cantidad maxima de backup por VM. 
+  
+  FIN
