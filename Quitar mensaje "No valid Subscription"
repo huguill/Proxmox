@@ -1,0 +1,17 @@
+Quitar mensaje "No valid Subscription"
+
+NOTA: Probado en vesiones 5.4, 6.1 son problema.
+
+1- Debemos que entrar a la consola, esto podemos hacerlo de desde "Panel Web > Shell" o por SSH.
+
+2- Ejecutamos el siguiente comando:
+
+sed -i.bck "s/data.status !== 'Active'/false/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
+
+Lo que hace el comando: 
+   - Hacer un backup del archivo Javascript "proxmoxlib.js" que vamos a editar
+   - Buscar dentro del archivo y reemplazar la linea que comprueba la suscripción
+   - Reiniciar el Servicio pve-proxy
+
+
+3- Por último actualizamos la web y ya no debería aparecer ese mensaje, en caso siga apareciendo tendrías que vaciar la cache de tu navegador.
