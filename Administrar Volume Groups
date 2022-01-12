@@ -1,0 +1,29 @@
+Administración de grupos de volumenes
+# vgs 
+Lista los volumen groups
+
+# vgcreate <Nombre del grupo> </dev/sdX>
+Crear VG
+
+# vgremove <Nombre del grupo>
+Borrar VG
+
+Administración de volumenes lógicos
+# lvs
+Lista los LV
+
+# lvcreate -L 100G -n <Nombre del volumen lógico> <Nombre del grupo> --> Tipo LVM
+# lvcreate -L 100G -T -n <Nombre del volumen lógico> <Nombre del grupo> --> Tipo LVM-Thin
+Crear LV
+
+# lvremove
+Borra LV
+
+# cfdisk /dev/sdX 
+Comando que permite particionar un disco indicando por parametro el disco deseado (/dev/sdX) 
+
+# mkfs -t ext4 /dev/sdX1
+Formateamos la partición /dev/sdX1 con el formato ext4.
+
+# mount -t ext4 /dev/sdX1 /mnt/ISOs/
+Montamos la particion /dev/sdX1 en el directorio /mnt/ISOs
