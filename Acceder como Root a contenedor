@@ -1,0 +1,2 @@
+Puede presentarse el caso que no recordemos la password de root en nuestro contenedor. Si es el caso podemos acceder al contenedor desde el servidor proxmox (host) mediante el comando:
+# pct enter <CTID> 
